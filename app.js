@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure CORS
 const corsOptions = {
-  origin: ['https://jakerich1.github.io'],
+  origin: ['https://jakerich1.github.io', 'http://localhost:3000'],
   optionsSuccessStatus: 200, // For legacy browser support
 };
 
