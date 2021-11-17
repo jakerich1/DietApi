@@ -9,7 +9,7 @@ var router = express.Router();
 // Get all food and water for specific date
 router.get('/', function(req, res, next) {
 
-  const dateInput = DateTime.fromISO(req.body.date);
+  const dateInput = DateTime.fromISO(req.query.date);
 
   if (dateInput.isValid) {
     const start = dateInput.toJSDate();
