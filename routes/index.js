@@ -70,23 +70,37 @@ router.get('/water/:id', function(req, res, next) {
 // Delete specific food entry
 router.delete('/food/:id', function(req, res, next) {
 
-  Food.findByIdAndDelete(req.params.id, (deleteErr) => {
-    // Handle db error
-    if (deleteErr) res.status(500).send('unable to remove entry');
-    // If successfull
-    res.status(202).send('Entry removed');
-  });
+  if(req.body.key === process.env.KEY){
+
+    Food.findByIdAndDelete(req.params.id, (deleteErr) => {
+      // Handle db error
+      if (deleteErr) res.status(500).send('unable to remove entry');
+      // If successfull
+      res.status(202).send('Entry removed');
+    });
+
+  }else{
+    res.status(400).send('key');
+  }
   
 });
 
 // Delete specific water entry
 router.delete('/water/:id', function(req, res, next) {
-  Water.findByIdAndDelete(req.params.id, (deleteErr) => {
-    // Handle db error
-    if (deleteErr) res.status(500).send('unable to remove entry');
-    // If successfull
-    res.status(202).send('Entry removed');
-  });
+
+  if(req.body.key === process.env.KEY){
+  
+    Water.findByIdAndDelete(req.params.id, (deleteErr) => {
+      // Handle db error
+      if (deleteErr) res.status(500).send('unable to remove entry');
+      // If successfull
+      res.status(202).send('Entry removed');
+    });
+
+  }else{
+    res.status(400).send('key');
+  }
+
 });
 
 // Post food entry for specified date
@@ -116,24 +130,32 @@ router.post('/food', [
 
   // Process request
   (req, res) => {
-    // Extract the validation errors from a request.
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      res.status(400).json(validationErrors);
-    } else {
-      // If no validation errors
-      const newFood = new Food({
-        created: new Date(),
-        name: req.body.name,
-        protein: req.body.protein,
-        calories: req.body.calories,
-      });
 
-      newFood.save((err) => {
-        if (err) return res.status(500);
-        res.status(201).send('Food entry submitted');
-      });
+    if(req.body.key === process.env.KEY){
+
+      // Extract the validation errors from a request.
+      const validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        res.status(400).json(validationErrors);
+      } else {
+        // If no validation errors
+        const newFood = new Food({
+          created: new Date(),
+          name: req.body.name,
+          protein: req.body.protein,
+          calories: req.body.calories,
+        });
+
+        newFood.save((err) => {
+          if (err) return res.status(500);
+          res.status(201).send('Food entry submitted');
+        });
+      }
+
+    } else{
+      res.status(400).send('key');
     }
+
   },
 ]);
 
@@ -150,21 +172,28 @@ router.post('/water', [
 
   // Process request
   (req, res) => {
-    // Extract the validation errors from a request.
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      res.status(400).json(validationErrors);
-    } else {
-      // If no validation errors
-      const newWater = new Water({
-        created: new Date(),
-        amount: req.body.amount,
-      });
 
-      newWater.save((err) => {
-        if (err) return res.status(500);
-        res.status(201).send('Water entry submitted');
-      });
+    if(req.body.key === process.env.KEY){
+
+      // Extract the validation errors from a request.
+      const validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        res.status(400).json(validationErrors);
+      } else {
+        // If no validation errors
+        const newWater = new Water({
+          created: new Date(),
+          amount: req.body.amount,
+        });
+
+        newWater.save((err) => {
+          if (err) return res.status(500);
+          res.status(201).send('Water entry submitted');
+        });
+      }
+
+    }else{
+      res.status(400).send('key');
     }
   },
 ]);
